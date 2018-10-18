@@ -1,0 +1,50 @@
+version: "2"
+
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: ./ 
+    depends_on:
+      - db
+    environment:
+      - ADMIN_MAIL=dev@qvo.cl
+      - ADMIN_PASSWD=12345678
+      - PS_DEV_MODE=1
+      - PS_COUNTRY=CL
+      - PS_ERASE_DB=1
+      - PS_FOLDER_ADMIN=adminTest
+      - PS_FOLDER_INSTALL=installTest
+      - PS_HANDLE_DYNAMIC_DOMAIN=1
+      - PS_INSTALL_AUTO=1
+      - PS_LANGUAGE=es
+      - DB_SERVER=db
+      - PS_DOMAIN=localhost:8090
+      - PS_SHOP_URL=localhost:8090
+      - DB_PASSWD=password
+    volumes:
+      - ./prestashop-data:/var/www/html
+    ports:
+      - "8090:80"
+
+  db:
+    image: mysql:5.6
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=prestashop
+    volumes:
+      - db_data:/var/lib/mysql
+    # ports:
+    #  - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8091:80
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+    depends_on:
+        - db
+
+volumes:
+  db_data:
