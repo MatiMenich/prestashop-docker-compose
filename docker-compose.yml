@@ -24,6 +24,7 @@ services:
       - DB_PASSWD=password
     volumes:
       - ./prestashop-data:/var/www/html
+      - ./config/php.ini:/usr/local/etc/php/conf.d/php.ini
     ports:
       - "8090:80"
 
